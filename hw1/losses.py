@@ -55,8 +55,8 @@ class SVMHingeLoss(ClassifierLoss):
         correct_scores = torch.gather(x_scores, 1, y.view(-1, 1))
         M = x_scores - correct_scores + self.delta
         hinge_loss = torch.maximum(torch.zeros(*y.shape), M.sum(dim=1)) - torch.ones(*y.shape)*self.delta
+        hinge_loss[hinge_loss < 0] += self.delta
         loss = hinge_loss.sum() / len(y)
-        idx = torch.arange(M.size(0))
         M.scatter_(1, y.unsqueeze(1), 0)
 
         # ========================
@@ -84,10 +84,9 @@ class SVMHingeLoss(ClassifierLoss):
         grad = None
         # ====== YOUR CODE: ======
         n = len(self.grad_ctx['y'])
-        G = torch.ones_like(self.grad_ctx['M'])
+        G = torch.ones(*self.grad_ctx['M'].shape)
         G[self.grad_ctx['M'] <= 0] = 0
-        neg_grad = torch.sum(G, dim=1)
-        G[torch.arange(n), self.grad_ctx['y']] = -neg_grad
+        G[torch.arange(n), self.grad_ctx['y']] = -torch.sum(G, dim=1)
         grad = torch.matmul(torch.transpose(self.grad_ctx['x'], 0, 1), G)
         grad = grad / n
         # ========================

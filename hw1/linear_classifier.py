@@ -67,7 +67,7 @@ class LinearClassifier(object):
 
         acc = None
         # ====== YOUR CODE: ======
-        acc = (y_pred==y).sum() / len(y)
+        acc = (y_pred == y).sum() / len(y)
         # ========================
 
         return acc * 100
@@ -91,6 +91,7 @@ class LinearClassifier(object):
             total_correct = 0
             average_loss = 0
 
+
             # TODO:
             #  Implement model training loop.
             #  1. At each epoch, evaluate the model on the entire training set
@@ -103,10 +104,28 @@ class LinearClassifier(object):
             #     using the weight_decay parameter.
 
             # ====== YOUR CODE: ======
+            average_loss = 0
+            total_correct = 0
             for batch_x, batch_y in dl_train:
                 y_pred, class_scores = self.predict(batch_x)
-                train_loss = loss_fn()
-                train_acc = self.evaluate_accuracy(batch_y, y_pred)
+                loss = loss_fn(batch_x, batch_y, class_scores, y_pred)
+                average_loss += loss
+                total_correct += self.evaluate_accuracy(batch_y, y_pred)
+                grad = loss_fn.grad()
+                self.weights -= learn_rate*grad + weight_decay*self.weights
+            train_res[0].append(total_correct / len(dl_train))
+            train_res[1].append(average_loss / len(dl_train))
+            
+            average_loss = 0
+            total_correct = 0
+            for batch_x, batch_y in dl_valid:
+                y_pred, class_scores = self.predict(batch_x)
+                loss = loss_fn(batch_x, batch_y, class_scores, y_pred)
+                average_loss += loss
+                total_correct += self.evaluate_accuracy(batch_y, y_pred)
+                
+            valid_res[0].append(total_correct / len(dl_valid))
+            valid_res[1].append(average_loss / len(dl_valid))
             # ========================
             print(".", end="")
 
@@ -127,7 +146,10 @@ class LinearClassifier(object):
         #  The output shape should be (n_classes, C, H, W).
 
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        if has_bias:
+            w_images = self.weights[1:].T.reshape(self.n_classes, *img_shape)
+        else:
+            w_images = self.weights.T.reshape(self.n_classes, *img_shape)
         # ========================
 
         return w_images
@@ -140,7 +162,9 @@ def hyperparams():
     #  Manually tune the hyperparameters to get the training accuracy test
     #  to pass.
     # ====== YOUR CODE: ======
-    raise NotImplementedError()
+    hp['weight_std'] = 0.001
+    hp['learn_rate'] = 0.01
+    hp["weight_decay"] = 0.01
     # ========================
 
     return hp

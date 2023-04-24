@@ -82,7 +82,10 @@ An equation: $e^{i\pi} -1 = 0$
 
 part3_q1 = r"""
 **Your answer:**
-
+The margin we choose for our SVM model is arbitrary because it only represents the level of "confidence" in the classification we penalize with respect to. 
+For any hyperplane W learned, we can always multiple W by a constant (in a linearly seperable data) to make any sample a support vector. Also, when deriving 
+the loss function by $W$, the constant $\Delta$ becomes zero. Hence $\Delta$ has no affect on the minima gradient descent will converge to or on
+the steps the algorithm will take towards the minima.
 
 Write your answer using **markdown** and $\LaTeX$:
 ```python
@@ -95,7 +98,13 @@ An equation: $e^{i\pi} -1 = 0$
 
 part3_q2 = r"""
 **Your answer:**
+1. From the image of every class, it looks like the linear model is learning by identifying patterns that correspond to the individual classes. For some classes, there are 
+some clear patterns in the weights image that numbers in the class usually exhibit. So, the model develop these patterns over the course of the training process and 
+then a prediction is made over a sample based on which patterns fit it best.
 
+2. The interpertation is similar to kNN in the sense that both models rely on geometric properties for classification. In kNN these properites are strictly the distance between
+a sample and the other samples in the training set, and in the linear model these properties are where the pixels are more likely to be black\white for each individual class.
+The difference is that kNN realizes only on k samples to make its decision, while the linear model decision is always influenced by the entire training set.
 
 Write your answer using **markdown** and $\LaTeX$:
 ```python
@@ -108,7 +117,9 @@ An equation: $e^{i\pi} -1 = 0$
 
 part3_q3 = r"""
 **Your answer:**
-
+1. The learning rate seems good. The loss function converges smoothly towards 0. From manual testing, a higher learning rate resulted a more jagged convegence that's 
+indicative of gradient descent jumping around the minima. A lower learning rate achieved a slightly better result, but took much longer.
+2. The model is slightly overfitting the train-set, because as seen in the graph, the train-accuracy is slightly higher than the test-accuracy.
 
 Write your answer using **markdown** and $\LaTeX$:
 ```python
