@@ -65,11 +65,11 @@ def create_train_validation_loaders(
     #     from the dataset.
     #  Hint: you can specify a Sampler class for the `DataLoader` instance
     #  you create.
-    # ====== YOUR CODE: ======
-    valid_size = (int)(np.floor(validation_ratio*len(dataset)))
-    rand_indices = torch.randperm(len(dataset))
-    train_set = rand_indices[valid_size:]
-    valid_set = rand_indices[:valid_size]
+    # ====== YOUR CODE: ======        
+    valid_size = (int)(np.round(validation_ratio*len(dataset)))
+    indices = list(range(len(dataset)))
+    train_set = indices[valid_size:]
+    valid_set = indices[:valid_size]
     dl_train = dt.DataLoader(dataset=dataset, batch_size=batch_size, num_workers=num_workers, sampler=dt.sampler.SubsetRandomSampler(train_set))
     dl_valid = dt.DataLoader(dataset=dataset, batch_size=batch_size, num_workers=num_workers, sampler=dt.sampler.SubsetRandomSampler(valid_set))
     # ========================

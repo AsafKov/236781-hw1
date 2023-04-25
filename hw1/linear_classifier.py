@@ -108,7 +108,7 @@ class LinearClassifier(object):
             total_correct = 0
             for batch_x, batch_y in dl_train:
                 y_pred, class_scores = self.predict(batch_x)
-                loss = loss_fn(batch_x, batch_y, class_scores, y_pred)
+                loss = loss_fn(batch_x, batch_y, class_scores, y_pred) + weight_decay*torch.norm(self.weights)/2
                 average_loss += loss
                 total_correct += self.evaluate_accuracy(batch_y, y_pred)
                 grad = loss_fn.grad()
@@ -118,10 +118,11 @@ class LinearClassifier(object):
             
             average_loss = 0
             total_correct = 0
+            regularization = weight_decay*torch.norm(self.weights)
             for batch_x, batch_y in dl_valid:
                 y_pred, class_scores = self.predict(batch_x)
-                loss = loss_fn(batch_x, batch_y, class_scores, y_pred)
-                average_loss += loss
+                loss = loss_fn(batch_x, batch_y, class_scores, y_pred) + regularization
+                average_loss += loss 
                 total_correct += self.evaluate_accuracy(batch_y, y_pred)
                 
             valid_res[0].append(total_correct / len(dl_valid))

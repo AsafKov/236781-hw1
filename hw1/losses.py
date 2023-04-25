@@ -87,7 +87,7 @@ class SVMHingeLoss(ClassifierLoss):
         G = torch.ones(*self.grad_ctx['M'].shape)
         G[self.grad_ctx['M'] <= 0] = 0
         G[torch.arange(n), self.grad_ctx['y']] = -torch.sum(G, dim=1)
-        grad = torch.matmul(torch.transpose(self.grad_ctx['x'], 0, 1), G)
+        grad = torch.matmul(self.grad_ctx['x'].T, G)
         grad = grad / n
         # ========================
 
