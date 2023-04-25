@@ -37,8 +37,8 @@ def torch_temporary_seed(seed: int):
     #  See torch.random.get/set_rng_state(), torch.random.manual_seed().
     # ====== YOUR CODE: ======
     initial_seed = torch.get_rng_state()
-    try:
         # ====== YOUR CODE: ======
+    try:
         torch.random.manual_seed(seed)
         yield
     finally:
@@ -152,7 +152,7 @@ class SubsetDataset(Dataset):
         # ====== YOUR CODE: ======
         if not 0 <= index < self.subset_len:
             raise IndexError
-        return self.source_dataset[index+self.offset]
+        return self.source_dataset[index + self.offset]
         # ========================
 
 

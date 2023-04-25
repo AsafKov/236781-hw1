@@ -94,10 +94,10 @@ def l2_dist(x1: Tensor, x2: Tensor):
 
     dists = None
     # ====== YOUR CODE: ======
-    x1_sqr = (x1**2).sum(dim=1).view(x1.size(dim=0), 1)
-    x2_sqr = (x2**2).sum(dim=1).view(1, x2.size(dim=0))
+    x1_sqr = torch.pow(x1, 2).sum(dim=1).view(x1.size(dim=0), 1)
+    x2_sqr = torch.pow(x2, 2).sum(dim=1).view(1, x2.size(dim=0))
     dot_product = torch.matmul(x1, x2.T)
-    dists = (x1_sqr - 2*dot_product + x2_sqr)**0.5
+    dists = torch.sqrt(x1_sqr - 2*dot_product + x2_sqr)
     # ========================
 
     return dists
