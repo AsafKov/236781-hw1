@@ -137,6 +137,10 @@ An equation: $e^{i\pi} -1 = 0$
 
 part4_q1 = r"""
 **Your answer:**
+Ideally the residuals should display a random scatter tightly around 0, which indicates that predication error
+is small across the entire set. It should also be linear, and the pattern should remain similar across the $\hat{y}$ axis.
+In the plot of the 5-best features, the residuals aren't as tightly spread around 0 as they are in out final model, and it also displays
+a curved pattern which may indicate the model does not fit data set properly (when limiting it to only those 5 features).
 
 
 Write your answer using **markdown** and $\LaTeX$:
@@ -150,7 +154,11 @@ An equation: $e^{i\pi} -1 = 0$
 
 part4_q2 = r"""
 **Your answer:**
-
+1. It remains a linear regression model, because the predictions are stil being made using a linear function:
+$y_{pred} = W^TX+b$
+2. Yes, for any non-linear function of the features, we can apply a mapping that will fit the function with the a suitable weight
+matrix that will serve to apply coefficents. 
+3. It will still be a hyperplane, just in a different space, and the decision boundary will depend on the applied mapping.
 
 Write your answer using **markdown** and $\LaTeX$:
 ```python
@@ -163,7 +171,11 @@ An equation: $e^{i\pi} -1 = 0$
 
 part4_q3 = r"""
 **Your answer:**
-
+1. logspace allows us to effeciently scour for an estimation for the best $\lambda$ over values with different orders of magnitude.
+Achieving the same goal with linespace will take more time, and when we found an estimation for the order of mantiude suitable for $\lambda$
+We can cross validate over a linespace defined range to scour around it.
+2. We had two hyperparameters - degree with x=3 possible values, and lambda with y=20 possible values. We applied gridsearch with k=3.
+The number of times we fit the data is therefore: $kxy = 3*3*20=180$
 
 Write your answer using **markdown** and $\LaTeX$:
 ```python
