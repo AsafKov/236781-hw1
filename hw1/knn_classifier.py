@@ -56,10 +56,9 @@ class KNNClassifier(object):
         #  Then we'll predict the label of that sample to be the majority
         #  label of it's nearest neighbors.
 
-        n_test = x_test.shape[0]
-        y_pred = torch.zeros(n_test, dtype=torch.int64)
+        y_pred = torch.empty(x_test.shape[0], dtype=torch.int64)
         dist_matrix = dist_matrix.T
-        for i in range(n_test):
+        for i in range(x_test.shape[0]):
             # TODO:
             #  - Find indices of k-nearest neighbors of test sample i
             #  - Set y_pred[i] to the most common class among them
@@ -94,10 +93,13 @@ def l2_dist(x1: Tensor, x2: Tensor):
 
     dists = None
     # ====== YOUR CODE: ======
-    x1_sqr = torch.pow(x1, 2).sum(dim=1).view(x1.size(dim=0), 1)
-    x2_sqr = torch.pow(x2, 2).sum(dim=1).view(1, x2.size(dim=0))
-    dot_product = torch.matmul(x1, x2.T)
-    dists = torch.sqrt(x1_sqr - 2*dot_product + x2_sqr)
+    x1_sqr = torch.pow(x1, 2).sum(1)
+    x2_sqr = torch.pow(x2, 2).sum(1)
+
+    dot_product = torch.matmul(x1 , x2.T).T
+
+    dists = (x1_sqr - 2*dot_product).T + x2_sqr
+    dists = torch.sqrt(dists)
     # ========================
 
     return dists
